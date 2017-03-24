@@ -55,7 +55,7 @@ def limpiar_url(url):
     return url
 
 def checkTwitterURL(url):
-    if ('twitter.com') not in url:  # en este caso ha introducido un usuario directamente
+    if ('twitter.com') not in url:  # En este caso ha introducido el nombre de un usuario
         return 1
     else:
         if (len(url) < 12):  # como minimo introduce twitter.com/
