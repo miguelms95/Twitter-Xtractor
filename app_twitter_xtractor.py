@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 ''' Developed by Miguel Martinez Serrano www.miguelms.es'''
 import requests
+import urllib2
 import StringIO
 from BeautifulSoup import BeautifulSoup
 
@@ -29,7 +30,7 @@ def extraerImagenPortada(url_usuario):
         html = BeautifulSoup(page.content.decode('utf-8', 'ignore'))
         #print html
         url_img_perfil = html.find('div',{'class':'ProfileCanopy-headerBg'}).find('img').get('src')
-        print 'Foto de portada: ' + url_img_perfil
+        print 'Foto de portada: ' + url_img_perfil+'\n'
     else:
         print '### ERROR: '+str(page.status_code)+' página no encontada'
 
