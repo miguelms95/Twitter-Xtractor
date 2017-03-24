@@ -4,7 +4,7 @@ import requests
 import StringIO
 from BeautifulSoup import BeautifulSoup
 
-DESCARGAR_FOTOS = 1
+DESCARGAR_FOTOS = 0    # 1 para descargar las fotos # 0 para no descargarlas
 
 def intro():
     cadena = '*** Bienvenido a Twitter XTRACTOR ***\n'
@@ -89,7 +89,7 @@ def getInfoPerfil(url):
         descriptionUser = html.find('p', {'class': 'ProfileHeaderCard-bio u-dir'}).string
         fechaRegistro = html.find('span', {'class': 'ProfileHeaderCard-joinDateText js-tooltip u-dir'}).string
         lugar = html.find('span', {'class': 'ProfileHeaderCard-locationText u-dir'}).string
-        cadena += nombreUsuario +' (@'+shortUser+')\n'
+        cadena += '=== ' +nombreUsuario +' (@'+shortUser+') ===\n'
         cadena += descriptionUser+'\n'
         cadena += fechaRegistro+'\n'
         cadena += lugar.replace(' ','').replace('\n','')+'\n'   # las fechas tienen muchos espacios y un salto de linea O_o
