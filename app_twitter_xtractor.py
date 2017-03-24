@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+''' Developed by Miguel Martinez Serrano www.miguelms.es'''
 import requests
 import StringIO
 from BeautifulSoup import BeautifulSoup
@@ -15,22 +15,21 @@ def intro():
 def extraerImagenPerfil(url_usuario):
     page = requests.get(url_usuario)
     if(page.status_code == 200):
-        print 'Obteniendo foto de perfil...'
+
         html = BeautifulSoup(page.content.decode('utf-8', 'ignore'))
         #print html
         url_img_perfil = html.find('img',{'class':'ProfileAvatar-image '}).get('src')
-        print extraerRutaImagenAltaCalidad(url_img_perfil)
+        print 'Foto de perfil: ' + extraerRutaImagenAltaCalidad(url_img_perfil)
     else:
         print '### ERROR: ' + str(page.status_code) + ' página no encontada'
 
 def extraerImagenPortada(url_usuario):
     page = requests.get(url_usuario)
     if(page.status_code == 200):
-        print 'Obteniendo foto de portada...'
         html = BeautifulSoup(page.content.decode('utf-8', 'ignore'))
         #print html
         url_img_perfil = html.find('div',{'class':'ProfileCanopy-headerBg'}).find('img').get('src')
-        print url_img_perfil
+        print 'Foto de portada: ' + url_img_perfil
     else:
         print '### ERROR: '+str(page.status_code)+' página no encontada'
 
