@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 ''' Developed by Miguel Martinez Serrano www.miguelms.es'''
 import requests
-import urllib2
+import urllib
 import StringIO
 from BeautifulSoup import BeautifulSoup
 
-DESCARGAR_FOTOS = 0    # 1 para descargar las fotos # 0 para no descargarlas
+DESCARGAR_FOTOS = 1    # 1 para descargar las fotos # 0 para no descargarlas
+aliasUser = ''
 
 def intro():
     cadena = '*** Bienvenido a Twitter XTRACTOR ***\n'
@@ -21,6 +22,7 @@ def extraerImagenPerfil(url_usuario):
         #print html
         url_img_perfil = html.find('img',{'class':'ProfileAvatar-image '}).get('src')
         print 'Foto de perfil: ' + extraerRutaImagenAltaCalidad(url_img_perfil)
+        return extraerRutaImagenAltaCalidad(url_img_perfil)
     else:
         print '### ERROR: ' + str(page.status_code) + ' página no encontada'
 
@@ -31,6 +33,7 @@ def extraerImagenPortada(url_usuario):
         #print html
         url_img_perfil = html.find('div',{'class':'ProfileCanopy-headerBg'}).find('img').get('src')
         print 'Foto de portada: ' + url_img_perfil+'\n'
+        return url_img_perfil
     else:
         print '### ERROR: '+str(page.status_code)+' página no encontada'
 
@@ -71,13 +74,23 @@ def extraerFotos(url):
     else:
         print getInfoPerfil(url)
         srcPerfil = extraerImagenPerfil(url)
-        srcPortada =extraerImagenPortada(url)
+        srcPortada = extraerImagenPortada(url)
+        print srcPerfil
         if(DESCARGAR_FOTOS):
-            descargarImagen(srcPerfil)
-            descargarImagen(srcPortada)
+            descargarImagen(srcPerfil,'perfil')
+            descargarImagen(srcPortada,'portada')
 
-def descargarImagen(src):
+def descargarImagen(src,cad):
+    resource = urllib.urlopen(src)
+    output = open(aliasUser+'_'+cad+'.jpg', 'wb')
+    output.write(resource.read())
+    output.close()
     print 'Descargando'
+
+# PENDIENTE
+def getFormato(src):
+    src = src.split('.')
+    return src[3]
 
 def getInfoPerfil(url):
     cadena = ''
@@ -86,6 +99,8 @@ def getInfoPerfil(url):
         html = BeautifulSoup(page.content.decode('utf-8', 'ignore'))
         nombreUsuario = html.find('h1', {'class': 'ProfileHeaderCard-name'}).find('a').contents[0]
         shortUser = html.find('b', {'class': 'u-linkComplex-target'}).string
+        global aliasUser
+        aliasUser = shortUser
         descriptionUser = html.find('p', {'class': 'ProfileHeaderCard-bio u-dir'}).string
         fechaRegistro = html.find('span', {'class': 'ProfileHeaderCard-joinDateText js-tooltip u-dir'}).string
         lugar = html.find('span', {'class': 'ProfileHeaderCard-locationText u-dir'}).string
