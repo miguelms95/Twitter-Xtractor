@@ -55,9 +55,8 @@ def limpiar_url(url):
     return url
 
 def checkTwitterURL(url):
-    if ('twitter.com') not in url:
-        print '### ERROR: Introduce una URL de twitter.'
-        return -1
+    if ('twitter.com') not in url:  # en este caso ha introducido un usuario directamente
+        return 1
     else:
         if (len(url) < 12):  # como minimo introduce twitter.com/
             print 'introduce un nombre de usuario tras la url de twitter. Ejemplo: twitter.com/google'
@@ -97,7 +96,7 @@ def getInfoPerfil(url):
         return cadena
 print intro()
 
-extraerFotos('http://twitter.com/miguelms_es')
-'''while 1:
+# extraerFotos('http://twitter.com/miguelms_es')
+while 1:
     data_user = raw_input('Obtener info de perfil -> ')
-    extraerFotos(data_user)'''
+    extraerFotos(data_user)
