@@ -38,11 +38,15 @@ def extraerImagenPortada(url_usuario):
         print '### ERROR: '+str(page.status_code)+' página no encontada'
 
 def extraerRutaImagenAltaCalidad(url):
-    urlImagen = url.split('_')
-    formatoImg = urlImagen[2]
+    # https://pbs.twimg.com/profile_images/839721704163155970/LI_TRk1z_400x400.jpg
+    urlImagen = url.split('/')
+    print urlImagen
+    formatoImg = urlImagen[5]
+    print formatoImg
     formatoImg = formatoImg.split('.')
     formatoImg = formatoImg[1] # aqui tengo 'jpg' o 'png'
-    urlFinal = urlImagen[0] + '_' + urlImagen[1]+'.'+formatoImg
+    urlFinal = urlImagen[0] + '//' + urlImagen[1]+'/' + urlImagen[2]+'/' + urlImagen[3]+'.'+formatoImg
+    print urlFinal
     return urlFinal
 
 def limpiar_url(url):
@@ -112,7 +116,9 @@ def getInfoPerfil(url):
         return cadena
 print intro()
 
-# extraerFotos('http://twitter.com/miguelms_es')
+extraerFotos('http://twitter.com/google')
+'''
 while 1:
     data_user = raw_input('Obtener info de perfil -> ')
     extraerFotos(data_user)
+'''
