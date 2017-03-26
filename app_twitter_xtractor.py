@@ -2,14 +2,16 @@
 ''' Developed by Miguel Martinez Serrano www.miguelms.es'''
 import requests
 import urllib
-import StringIO
+import os
 from BeautifulSoup import BeautifulSoup
 
-DESCARGAR_FOTOS = 1    # 1 para descargar las fotos # 0 para no descargarlas
+DESCARGAR_FOTOS = 1     # 1 para descargar las fotos # 0 para no descargarlas
+DIR = 'export_imgs'     #Directorio para guardar imagenes exportadas
 aliasUser = ''
 
 def intro():
-    cadena = '*** Bienvenido a Twitter XTRACTOR ***\n'
+    cadena = '*** Bienvenido a Twitter XTRACTOR *** '
+    cadena +='Desarrollado por @miguelms_es *** www.miguelms.es\n\n'
     cadena +='Introduce una URL de perfil de twitter o un nombre de usuario.\n'
     cadena +='Formatos de ejemplo: @miguelms_es, miguelms_es,  http://twitter.com/miguelms_es\n'
     return cadena
@@ -31,9 +33,11 @@ def extraerImagenPortada(url_usuario):
     if(page.status_code == 200):
         html = BeautifulSoup(page.content.decode('utf-8', 'ignore'))
         #print html
-        url_img_perfil = html.find('div',{'class':'ProfileCanopy-headerBg'}).find('img').get('src')
-        print 'Foto de portada: ' + url_img_perfil+'\n'
-        return url_img_perfil
+        url_imagenPortada = html.find('div',{'class':'ProfileCanopy-headerBg'}).find('img').get('src')
+        if(url_imagenPortada != None):
+            print 'Foto de portada: ' + url_imagenPortada+'\n'
+            return None
+        return url_imagenPortada
     else:
         print '### ERROR: '+str(page.status_code)+' página no encontada'
 
@@ -87,12 +91,20 @@ def extraerFotos(url):
         srcPortada = extraerImagenPortada(url)
 
         if(DESCARGAR_FOTOS):
-            descargarImagen(srcPerfil,'perfil')
-            descargarImagen(srcPortada,'portada')
+            if(srcPerfil != None):
+                descargarImagen(srcPerfil,'perfil')
+            else:
+                print 'No tiene foto de perfil\n'
+            if(srcPortada != None):
+                descargarImagen(srcPortada,'portada')
+            else:
+                print 'No tiene foto de portada\n'
 
 def descargarImagen(src,cad):
     resource = urllib.urlopen(src)
-    output = open(aliasUser+'_'+cad+'.jpg', 'wb')
+    if not os.path.exists(DIR):
+        os.makedirs(DIR)
+    output = open(DIR+'/'+aliasUser+'_'+cad+'.jpg', 'wb')
     output.write(resource.read())
     output.close()
     print 'Descargando foto de ' + cad
@@ -112,6 +124,8 @@ def getInfoPerfil(url):
         global aliasUser
         aliasUser = shortUser
         descriptionUser = html.find('p', {'class': 'ProfileHeaderCard-bio u-dir'}).string
+        if(descriptionUser == None):
+            descriptionUser = ''
         fechaRegistro = html.find('span', {'class': 'ProfileHeaderCard-joinDateText js-tooltip u-dir'}).string
         lugar = html.find('span', {'class': 'ProfileHeaderCard-locationText u-dir'}).string
         cadena += '=== ' +nombreUsuario +' (@'+shortUser+') ===\n'
