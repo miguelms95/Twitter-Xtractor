@@ -40,14 +40,20 @@ def extraerImagenPortada(url_usuario):
 def extraerRutaImagenAltaCalidad(url):
     # https://pbs.twimg.com/profile_images/839721704163155970/LI_TRk1z_400x400.jpg
     urlImagen = url.split('/')
-    print urlImagen
+    #print urlImagen
     formatoImg = urlImagen[5]
-    print formatoImg
+    #print formatoImg
     formatoImg = formatoImg.split('.')
     formatoImg = formatoImg[1] # aqui tengo 'jpg' o 'png'
-    urlFinal = urlImagen[0] + '//' + urlImagen[1]+'/' + urlImagen[2]+'/' + urlImagen[3]+'.'+formatoImg
-    print urlFinal
+    urlFinal = urlImagen[0] + '//' + urlImagen[2]+'/' + urlImagen[3]+'/' + urlImagen[4]+'/'+splitPartImgenSrc(urlImagen[5])+'.'+formatoImg
     return urlFinal
+
+def splitPartImgenSrc(url):
+    url = url.split('x')
+    tamFoto = len(url[1].split('.')[0])
+    tamFoto +=1 # para eliminar tambien la "_" de la ruta de la imagen
+    return url[0][:-tamFoto]
+
 
 def limpiar_url(url):
     url = url.replace(" ","")
@@ -79,7 +85,7 @@ def extraerFotos(url):
         print getInfoPerfil(url)
         srcPerfil = extraerImagenPerfil(url)
         srcPortada = extraerImagenPortada(url)
-        print srcPerfil
+
         if(DESCARGAR_FOTOS):
             descargarImagen(srcPerfil,'perfil')
             descargarImagen(srcPortada,'portada')
@@ -89,7 +95,7 @@ def descargarImagen(src,cad):
     output = open(aliasUser+'_'+cad+'.jpg', 'wb')
     output.write(resource.read())
     output.close()
-    print 'Descargando'
+    print 'Descargando foto de ' + cad
 
 # PENDIENTE
 def getFormato(src):
