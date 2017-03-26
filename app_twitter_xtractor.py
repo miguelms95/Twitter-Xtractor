@@ -126,5 +126,7 @@ print intro()
 
 while 1:
     data_user = raw_input('Obtener info de perfil -> ')
+    if(data_user=="exit"):
+        exit(0)
     extraerFotos(data_user)
 
