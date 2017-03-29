@@ -6,7 +6,7 @@ import os
 from BeautifulSoup import BeautifulSoup
 
 DESCARGAR_FOTOS = 1     # 1 para descargar las fotos # 0 para no descargarlas
-DIR = 'export_imgs'     #Directorio para guardar imagenes exportadas
+DIR = 'export_imgs'     # Directorio para guardar imagenes exportadas
 aliasUser = ''
 
 def intro():
