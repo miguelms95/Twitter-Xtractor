@@ -18,10 +18,8 @@ def intro():
 
 def extraerImagenPerfil(url_usuario):
     page = requests.get(url_usuario)
-    if(page.status_code == 200):
-
+    if(page.status_code == 200):    # check conexion
         html = BeautifulSoup(page.content.decode('utf-8', 'ignore'))
-        #print html
         url_img_perfil = html.find('img',{'class':'ProfileAvatar-image '}).get('src')
         print 'Foto de perfil: ' + extraerRutaImagenAltaCalidad(url_img_perfil)
         return extraerRutaImagenAltaCalidad(url_img_perfil)
@@ -36,8 +34,8 @@ def extraerImagenPortada(url_usuario):
         url_imagenPortada = html.find('div',{'class':'ProfileCanopy-headerBg'}).find('img').get('src')
         if(url_imagenPortada != None):
             print 'Foto de portada: ' + url_imagenPortada+'\n'
-            return None
-        return url_imagenPortada
+            return url_imagenPortada
+        return None
     else:
         print '### ERROR: '+str(page.status_code)+' página no encontada'
 
