@@ -40,20 +40,17 @@ def extraerImagenPortada(url_usuario):
         print '### ERROR: '+str(page.status_code)+' página no encontada'
 
 def extraerRutaImagenAltaCalidad(url):
-    # https://pbs.twimg.com/profile_images/839721704163155970/LI_TRk1z_400x400.jpg
     urlImagen = url.split('/')
-    #print urlImagen
     formatoImg = urlImagen[5]
-    #print formatoImg
     formatoImg = formatoImg.split('.')
-    formatoImg = formatoImg[1] # aqui tengo 'jpg' o 'png'
+    formatoImg = formatoImg[1]  # aqui tengo 'jpg' o 'png'
     urlFinal = urlImagen[0] + '//' + urlImagen[2]+'/' + urlImagen[3]+'/' + urlImagen[4]+'/'+splitPartImgenSrc(urlImagen[5])+'.'+formatoImg
     return urlFinal
 
 def splitPartImgenSrc(url):
     url = url.split('x')
     tamFoto = len(url[1].split('.')[0])
-    tamFoto +=1 # para eliminar tambien la "_" de la ruta de la imagen
+    tamFoto +=1                 # para eliminar tambien la "_" de la ruta de la imagen
     return url[0][:-tamFoto]
 
 
