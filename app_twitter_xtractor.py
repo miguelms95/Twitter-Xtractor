@@ -131,8 +131,6 @@ def getInfoPerfil(url):
         return cadena
 print intro()
 
-#extraerFotos('http://twitter.com/google')
-
 while 1:
     data_user = raw_input('Obtener info de perfil -> ')
     if(data_user=="exit"):
